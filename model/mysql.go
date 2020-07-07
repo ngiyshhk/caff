@@ -10,8 +10,14 @@ type Mysql struct {
 	DBName string
 }
 
-func NewMysql() *Mysql {
-	return &Mysql{}
+func NewMysql(user, pass, host string, port int, dbName string) *Mysql {
+	return &Mysql{
+		User:   user,
+		Pass:   pass,
+		Host:   host,
+		Port:   port,
+		DBName: dbName,
+	}
 }
 
 func (m *Mysql) String() string {

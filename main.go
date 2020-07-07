@@ -7,12 +7,11 @@ import (
 	"github.com/ngiyshhk/caff/gateway"
 	"github.com/ngiyshhk/caff/infrastructure"
 	"github.com/ngiyshhk/caff/model"
-	"github.com/ngiyshhk/caff/utils"
 	"os"
 )
 
 func main() {
-	mysqlConfig := model.NewMysql()
+	mysqlConfig := model.NewMysql("root", "", "localhost", 3306, "a")
 
 	if err := infrastructure.InitDB(mysqlConfig.String()); err != nil {
 		fmt.Println(err)
@@ -25,19 +24,49 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	for _, table := range tables {
-		args := &model.Schema{
-			TableName:              table,
-			SchemaName:             utils.ToCamelCase(table),
-			RepositoryName:         "github.com/ngiyshhk/caffed",
-			ModelPackageName:       "model",
-			GatewayPackageName:     "gateway",
-			IGatewayPackageName:    "igateway",
-			IControllerPackageName: "icontroller",
-			ControllerPackageName:  "controller",
-			IUsecasePackageName:    "iusecase",
-			UsecasePackageName:     "usecase",
+
+	schema := &model.Schema{
+		RepositoryName:         "github.com/ngiyshhk/caffed",
+		ModelPackageName:       "model",
+		GatewayPackageName:     "gateway",
+		IGatewayPackageName:    "igateway",
+		IControllerPackageName: "icontroller",
+		ControllerPackageName:  "controller",
+		IUsecasePackageName:    "iusecase",
+		UsecasePackageName:     "usecase",
+	}
+
+	{
+		srcGateway := gateway.NewSrc(schema)
+		if err := srcGateway.WriteConstsContextKey(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
 		}
+		if err := srcGateway.WriteGoMod(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if err := srcGateway.WriteGoSum(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if err := srcGateway.WriteUtilsContext(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if err := srcGateway.WriteModelMysql(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if err := srcGateway.WriteInfraMysql(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	}
+
+	var schemas []*model.Schema
+	for _, table := range tables {
+		args := model.SchemaWithTableName(schema, table)
 
 		columns, err := columnGateway.ListColumns(mysqlConfig.DBName, table)
 		if err != nil {
@@ -58,5 +87,13 @@ func main() {
 				os.Exit(1)
 			}
 		}
+
+		schemas = append(schemas, args)
+	}
+
+	mainSrcGateway := gateway.NewMainSrc(schemas)
+	if err := mainSrcGateway.Write(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }

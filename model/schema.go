@@ -15,19 +15,36 @@ type Schema struct {
 	IUsecasePackageName    string
 	UsecasePackageName     string
 	TableName              string
-	SchemaName             string
+}
+
+func SchemaWithTableName(schema *Schema, tableName string) *Schema {
+	return &Schema{
+		RepositoryName:         schema.RepositoryName,
+		ModelPackageName:       schema.ModelPackageName,
+		IGatewayPackageName:    schema.IGatewayPackageName,
+		GatewayPackageName:     schema.GatewayPackageName,
+		IControllerPackageName: schema.IControllerPackageName,
+		ControllerPackageName:  schema.ControllerPackageName,
+		IUsecasePackageName:    schema.IUsecasePackageName,
+		UsecasePackageName:     schema.UsecasePackageName,
+		TableName:              tableName,
+	}
+}
+
+func (s Schema) SchemaName() string {
+	return utils.ToCamelCase(s.TableName)
 }
 
 func (s Schema) LowerInitialSchemaName() string {
-	return strings.ToLower(string(s.SchemaName[0]))
+	return strings.ToLower(string(s.SchemaName()[0]))
 }
 
 func (s Schema) LowerSchemaName() string {
-	return s.LowerInitialSchemaName() + s.SchemaName[1:]
+	return s.LowerInitialSchemaName() + s.SchemaName()[1:]
 }
 
 func (s Schema) LowerSnakeSchemaName() string {
-	return utils.ToSnakeCase(s.SchemaName)
+	return utils.ToSnakeCase(s.SchemaName())
 }
 
 func (s Schema) LastModelPackageName() string {
