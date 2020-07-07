@@ -62,8 +62,8 @@ jobs:
           name: release_url
       - name: go path to path
         run: echo "::add-path::$(go env GOPATH)/bin"
-      - name: make release
-        run: make release OS=${goos}
+      - name: make all
+        run: make all OS=${goos}
         env:
           goos: ${{ matrix.goos }}
       - name: tar
