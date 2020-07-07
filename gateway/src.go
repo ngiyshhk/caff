@@ -2,21 +2,25 @@ package gateway
 
 import (
 	"fmt"
-	"github.com/ngiyshhk/caff/consts"
-	"github.com/ngiyshhk/caff/model"
 	"os"
 	"strings"
 	"text/template"
+
+	"github.com/ngiyshhk/caff/consts"
+	"github.com/ngiyshhk/caff/model"
 )
 
+// Src .
 type Src struct {
 	schema *model.Schema
 }
 
+// NewSrc .
 func NewSrc(schema *model.Schema) *Src {
 	return &Src{schema: schema}
 }
 
+// WriteConstsContextKey .
 func (s *Src) WriteConstsContextKey() error {
 	if err := os.MkdirAll(s.schema.ParentDir()+"/consts", 0777); err != nil {
 		return err
@@ -35,6 +39,7 @@ func (s *Src) WriteConstsContextKey() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteModelMysql .
 func (s *Src) WriteModelMysql() error {
 	if err := os.MkdirAll(s.schema.ParentDir()+"/model", 0777); err != nil {
 		return err
@@ -53,6 +58,7 @@ func (s *Src) WriteModelMysql() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteInfraMysql .
 func (s *Src) WriteInfraMysql() error {
 	if err := os.MkdirAll(s.schema.ParentDir()+"/infrastructure", 0777); err != nil {
 		return err
@@ -71,6 +77,7 @@ func (s *Src) WriteInfraMysql() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteUtilsContext .
 func (s *Src) WriteUtilsContext() error {
 	if err := os.MkdirAll(s.schema.ParentDir()+"/utils", 0777); err != nil {
 		return err
@@ -89,6 +96,7 @@ func (s *Src) WriteUtilsContext() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteGoMod .
 func (s *Src) WriteGoMod() error {
 	if err := os.MkdirAll(s.schema.ParentDir(), 0777); err != nil {
 		return err
@@ -107,6 +115,7 @@ func (s *Src) WriteGoMod() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteGoSum .
 func (s *Src) WriteGoSum() error {
 	if err := os.MkdirAll(s.schema.ParentDir(), 0777); err != nil {
 		return err
@@ -125,6 +134,7 @@ func (s *Src) WriteGoSum() error {
 	return tpl.Execute(file, s.schema)
 }
 
+// WriteModel .
 func (s *Src) WriteModel(packageName string, columns []model.Column) error {
 	var res []string
 	res = append(res, fmt.Sprintf("package %s", packageName))
@@ -157,6 +167,7 @@ func (s *Src) WriteModel(packageName string, columns []model.Column) error {
 	return err
 }
 
+// Write .
 func (s *Src) Write(layer *model.Template) error {
 	if err := os.MkdirAll(s.schema.ParentDir()+"/"+layer.PackageNameFunc(s.schema), 0777); err != nil {
 		return err

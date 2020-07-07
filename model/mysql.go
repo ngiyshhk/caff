@@ -2,6 +2,7 @@ package model
 
 import "fmt"
 
+// Mysql .
 type Mysql struct {
 	User   string
 	Pass   string
@@ -10,6 +11,7 @@ type Mysql struct {
 	DBName string
 }
 
+// NewMysql .
 func NewMysql(user, pass, host string, port int, dbName string) *Mysql {
 	return &Mysql{
 		User:   user,
@@ -20,6 +22,7 @@ func NewMysql(user, pass, host string, port int, dbName string) *Mysql {
 	}
 }
 
+// String .
 func (m *Mysql) String() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", m.User, m.Pass, m.Host, m.Port, m.DBName)
 }

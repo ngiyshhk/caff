@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// UpperInitial .
 func UpperInitial(s string) string {
 	if len(s) <= 1 {
 		return strings.ToUpper(s)
@@ -12,6 +13,7 @@ func UpperInitial(s string) string {
 	return strings.ToUpper(string(s[0])) + s[1:]
 }
 
+// ToSnakeCase .
 func ToSnakeCase(s string) string {
 	result := s
 	for _, pattern := range []string{"(.)([A-Z][^A-Z_]+)", "([^A-Z_])([A-Z])"} {
@@ -21,6 +23,7 @@ func ToSnakeCase(s string) string {
 	return strings.ToLower(result)
 }
 
+// ToCamelCase .
 func ToCamelCase(s string) string {
 	rgp := regexp.MustCompile("(.+?)(_+|$)")
 	return rgp.ReplaceAllStringFunc(s, func(t string) string {

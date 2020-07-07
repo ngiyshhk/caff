@@ -5,14 +5,17 @@ import (
 	"github.com/ngiyshhk/caff/model"
 )
 
+// Column .
 type Column struct {
 	db *gorm.DB
 }
 
+// NewColumn .
 func NewColumn(db *gorm.DB) *Column {
 	return &Column{db: db}
 }
 
+// ListTables .
 func (c *Column) ListTables(schemaName string) ([]string, error) {
 	type res struct {
 		TableName string
@@ -33,6 +36,7 @@ func (c *Column) ListTables(schemaName string) ([]string, error) {
 	return result, nil
 }
 
+// ListColumns .
 func (c *Column) ListColumns(schemaName, tableName string) ([]model.Column, error) {
 	var result []model.Column
 	c.db.Table("information_schema.COLUMNS").

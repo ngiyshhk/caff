@@ -2,6 +2,7 @@ package consts
 
 import "github.com/ngiyshhk/caff/model"
 
+// GoModTemplate .
 const GoModTemplate = `module {{.RepositoryName}}
 
 go 1.13
@@ -21,6 +22,7 @@ require (
 )
 `
 
+// GoSumTemplate .
 const GoSumTemplate = `cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
@@ -166,6 +168,7 @@ honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWh
 honnef.co/go/tools v0.0.0-20190523083050-ea95bdfd59fc/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 `
 
+// ConstsContextKeyTemplate .
 const ConstsContextKeyTemplate = `package consts
 
 // ContextKey .
@@ -175,6 +178,7 @@ type ContextKey = int
 const ContextDB ContextKey = iota
 `
 
+// ModelMysqlTemplate .
 const ModelMysqlTemplate = `package model
 
 import "fmt"
@@ -202,6 +206,7 @@ func (m *Mysql) String() string {
 }
 `
 
+// UtilContextTemplate .
 const UtilContextTemplate = `package utils
 
 import (
@@ -230,6 +235,7 @@ func GetDBFromContext(ctx context.Context) (*gorm.DB, error) {
 }
 `
 
+// InfraMysqlTemplate .
 const InfraMysqlTemplate = `package infrastructure
 
 import "github.com/jinzhu/gorm"
@@ -250,6 +256,7 @@ func GetDB() *gorm.DB {
 }
 `
 
+// IGatewayTemplate .
 const IGatewayTemplate = `package {{.LastIGatewayPackageName}}
 
 import (
@@ -266,6 +273,7 @@ type {{.SchemaName}} interface {
 }
 `
 
+// GatewayTemplate .
 const GatewayTemplate = `package {{.LastGatewayPackageName}}
 
 import (
@@ -334,6 +342,7 @@ func ({{.LowerInitialSchemaName}} *{{.SchemaName}}) Delete(ctx context.Context, 
 }
 `
 
+// IControllerTemplate .
 const IControllerTemplate = `package {{.LastIControllerPackageName}}
 
 import "context"
@@ -347,6 +356,7 @@ type {{.SchemaName}} interface {
 }
 `
 
+// ControllerTemplate .
 const ControllerTemplate = `package {{.LastControllerPackageName}}
 
 import (
@@ -480,6 +490,7 @@ func ({{.LowerInitialSchemaName}} *{{.SchemaName}}) Delete(ic context.Context) {
 }
 `
 
+// IUsecaseTemplate .
 const IUsecaseTemplate = `package {{.LastIUsecasePackageName}}
 
 import (
@@ -496,6 +507,7 @@ type {{.SchemaName}} interface {
 }
 `
 
+// UsecaseTemplate .
 const UsecaseTemplate = `package {{.LastUsecasePackageName}}
 
 import (
@@ -534,6 +546,7 @@ func ({{.LowerInitialSchemaName}} *{{.SchemaName}}) Delete(ctx context.Context, 
 }
 `
 
+// Templates .
 var Templates = []*model.Template{
 	{
 		Type:  ControllerTemplateType,

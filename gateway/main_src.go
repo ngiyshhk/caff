@@ -2,19 +2,23 @@ package gateway
 
 import (
 	"fmt"
-	"github.com/ngiyshhk/caff/model"
 	"os"
 	"strings"
+
+	"github.com/ngiyshhk/caff/model"
 )
 
+// MainSrc .
 type MainSrc struct {
 	schemas []*model.Schema
 }
 
+// NewMainSrc .
 func NewMainSrc(schemas []*model.Schema) *MainSrc {
 	return &MainSrc{schemas: schemas}
 }
 
+// Write .
 func (m *MainSrc) Write() error {
 	s := m.schemas[0]
 	var res []string

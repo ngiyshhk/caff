@@ -1,5 +1,6 @@
 package model
 
+// Template .
 type Template struct {
 	Type            TemplateType
 	Value           string

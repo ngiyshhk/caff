@@ -1,0 +1,90 @@
+name: caff ci
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  pre-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Output Release URL File
+        run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+      - name: Save Release URL File for publish
+        uses: actions/upload-artifact@v1
+        with:
+          name: release_url
+          path: release_url.txt
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs: pre-release
+    strategy:
+      matrix:
+        os: [mac64, lin64, win64]
+        include:
+          - os: mac64
+            goos: darwin
+          - os: lin64
+            goos: linux
+          - os: win64
+            goos: windows
+    steps:
+      - name: set up
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: cache
+        uses: actions/cache@v1
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Load Release URL File from release job
+        uses: actions/download-artifact@v1
+        with:
+          name: release_url
+      - name: go path to path
+        run: echo "::add-path::$(go env GOPATH)/bin"
+      - name: make release
+        run: make release OS=${goos}
+        env:
+          goos: ${{ matrix.goos }}
+      - name: tar
+        run: tar czvf caff.${goos}.tar.gz -C bin .
+        env:
+          goos: ${{ matrix.goos }}
+      - name: Get Release File Name & Upload URL
+        id: get_release_info
+        run: |
+          value=`cat release_url/release_url.txt`
+          echo ::set-output name=upload_url::$value
+        env:
+          TAG_REF_NAME: ${{ github.ref }}
+          REPOSITORY_NAME: ${{ github.repository }}
+      - name: upload asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release_info.outputs.upload_url }}
+          asset_path: ./caff.${{ matrix.goos }}.tar.gz
+          asset_name: caff.${{ matrix.goos }}.tar.gz
+          asset_content_type: application/tar

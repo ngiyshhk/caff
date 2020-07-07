@@ -4,6 +4,7 @@ import "github.com/jinzhu/gorm"
 
 var db *gorm.DB
 
+// InitDB .
 func InitDB(config string) error {
 	var err error
 	db, err = gorm.Open("mysql", config)
@@ -13,6 +14,7 @@ func InitDB(config string) error {
 	return nil
 }
 
+// GetDB .
 func GetDB() *gorm.DB {
 	return db
 }

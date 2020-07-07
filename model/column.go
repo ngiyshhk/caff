@@ -2,9 +2,11 @@ package model
 
 import (
 	"fmt"
+
 	"github.com/ngiyshhk/caff/utils"
 )
 
+// Column .
 type Column struct {
 	TableName              string `gorm:"column:TABLE_NAME"`
 	ColumnName             string `gorm:"column:COLUMN_NAME"`
@@ -35,6 +37,7 @@ func (c *Column) golangDataType() string {
 	}
 }
 
+// String .
 func (c *Column) String() string {
 	return fmt.Sprintf(
 		"%s %s `gorm:\"column:%s\"`",
