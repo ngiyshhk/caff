@@ -69,7 +69,7 @@ func exec(c *cli.Context) error {
 
 	schema := &model.Schema{
 		RepositoryName:         c.String("repo"),
-		ModelPackageName:       "model",
+		ModelPackageName:       "entity",
 		GatewayPackageName:     "gateway",
 		IGatewayPackageName:    "igateway",
 		IControllerPackageName: "icontroller",

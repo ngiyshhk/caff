@@ -366,6 +366,7 @@ import (
 	"{{.RepositoryName}}/{{.IControllerPackageName}}"
 	"{{.RepositoryName}}/infrastructure"
 	"{{.RepositoryName}}/{{.IUsecasePackageName}}"
+	"{{.RepositoryName}}/{{.ModelPackageName}}"
 	"{{.RepositoryName}}/utils"
 )
 
@@ -426,9 +427,17 @@ func ({{.LowerInitialSchemaName}} *{{.SchemaName}}) Post(ic context.Context) {
 		return
 	}
 
+	var {{.LowerSchemaName}} {{.ModelPackageName}}.{{.SchemaName}}
+	if err := gc.BindJSON(&{{.LowerSchemaName}}); err != nil {
+		gc.JSON(500, gin.H{
+			"message": "failed to parse JSON",
+		})
+		return
+	}
+
 	err := infrastructure.GetDB().Transaction(func(tx *gorm.DB) error {
 		ctx := utils.ContextWithDB(gc, tx)
-		return {{.LowerInitialSchemaName}}.{{.LowerSchemaName}}Usecase.Create(ctx, nil)
+		return {{.LowerInitialSchemaName}}.{{.LowerSchemaName}}Usecase.Create(ctx, &{{.LowerSchemaName}})
 	})
 	if err != nil {
 		gc.JSON(500, gin.H{
@@ -450,9 +459,17 @@ func ({{.LowerInitialSchemaName}} *{{.SchemaName}}) Put(ic context.Context) {
 		return
 	}
 
+	var {{.LowerSchemaName}} {{.ModelPackageName}}.{{.SchemaName}}
+	if err := gc.BindJSON(&{{.LowerSchemaName}}); err != nil {
+		gc.JSON(500, gin.H{
+			"message": "failed to parse JSON",
+		})
+		return
+	}
+
 	err := infrastructure.GetDB().Transaction(func(tx *gorm.DB) error {
 		ctx := utils.ContextWithDB(gc, tx)
-		return {{.LowerInitialSchemaName}}.{{.LowerSchemaName}}Usecase.Update(ctx, nil)
+		return {{.LowerInitialSchemaName}}.{{.LowerSchemaName}}Usecase.Update(ctx, &{{.LowerSchemaName}})
 	})
 	if err != nil {
 		gc.JSON(500, gin.H{
