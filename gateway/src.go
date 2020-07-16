@@ -22,11 +22,11 @@ func NewSrc(schema *model.Schema) *Src {
 
 // WriteConstsContextKey .
 func (s *Src) WriteConstsContextKey() error {
-	if err := os.MkdirAll(s.schema.ParentDir()+"/consts", 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/consts", 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/consts/context_key.go")
+	file, err := os.Create(s.schema.ParentDir + "/consts/context_key.go")
 	if err != nil {
 		return err
 	}
@@ -41,11 +41,11 @@ func (s *Src) WriteConstsContextKey() error {
 
 // WriteModelMysql .
 func (s *Src) WriteModelMysql() error {
-	if err := os.MkdirAll(s.schema.ParentDir()+"/model", 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/model", 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/model/mysql.go")
+	file, err := os.Create(s.schema.ParentDir + "/model/mysql.go")
 	if err != nil {
 		return err
 	}
@@ -60,11 +60,11 @@ func (s *Src) WriteModelMysql() error {
 
 // WriteInfraMysql .
 func (s *Src) WriteInfraMysql() error {
-	if err := os.MkdirAll(s.schema.ParentDir()+"/infrastructure", 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/infrastructure", 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/infrastructure/mysql.go")
+	file, err := os.Create(s.schema.ParentDir + "/infrastructure/mysql.go")
 	if err != nil {
 		return err
 	}
@@ -79,11 +79,11 @@ func (s *Src) WriteInfraMysql() error {
 
 // WriteUtilsContext .
 func (s *Src) WriteUtilsContext() error {
-	if err := os.MkdirAll(s.schema.ParentDir()+"/utils", 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/utils", 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/utils/context.go")
+	file, err := os.Create(s.schema.ParentDir + "/utils/context.go")
 	if err != nil {
 		return err
 	}
@@ -98,11 +98,11 @@ func (s *Src) WriteUtilsContext() error {
 
 // WriteGoMod .
 func (s *Src) WriteGoMod() error {
-	if err := os.MkdirAll(s.schema.ParentDir(), 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir, 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/go.mod")
+	file, err := os.Create(s.schema.ParentDir + "/go.mod")
 	if err != nil {
 		return err
 	}
@@ -117,11 +117,11 @@ func (s *Src) WriteGoMod() error {
 
 // WriteGoSum .
 func (s *Src) WriteGoSum() error {
-	if err := os.MkdirAll(s.schema.ParentDir(), 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir, 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/go.sum")
+	file, err := os.Create(s.schema.ParentDir + "/go.sum")
 	if err != nil {
 		return err
 	}
@@ -154,11 +154,12 @@ func (s *Src) WriteModel(packageName string, columns []model.Column) error {
 	res = append(res, fmt.Sprintf("	return \"%s\"", s.schema.TableName))
 	res = append(res, "}")
 
-	if err := os.MkdirAll(s.schema.ParentDir()+"/"+s.schema.LastModelPackageName(), 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/"+s.schema.LastModelPackageName(), 0777); err != nil {
+		fmt.Println(s.schema.ParentDir + "/" + s.schema.LastModelPackageName())
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/" + s.schema.LastModelPackageName() + "/" + s.schema.TableName + ".go")
+	file, err := os.Create(s.schema.ParentDir + "/" + s.schema.LastModelPackageName() + "/" + s.schema.TableName + ".go")
 	if err != nil {
 		return err
 	}
@@ -169,11 +170,11 @@ func (s *Src) WriteModel(packageName string, columns []model.Column) error {
 
 // Write .
 func (s *Src) Write(layer *model.Template) error {
-	if err := os.MkdirAll(s.schema.ParentDir()+"/"+layer.PackageNameFunc(s.schema), 0777); err != nil {
+	if err := os.MkdirAll(s.schema.ParentDir+"/"+layer.PackageNameFunc(s.schema), 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.schema.ParentDir() + "/" + layer.PackageNameFunc(s.schema) + "/" + s.schema.TableName + ".go")
+	file, err := os.Create(s.schema.ParentDir + "/" + layer.PackageNameFunc(s.schema) + "/" + s.schema.TableName + ".go")
 	if err != nil {
 		return err
 	}

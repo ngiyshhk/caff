@@ -68,11 +68,11 @@ func (m *MainSrc) Write() error {
 	res = append(res, `	}`)
 	res = append(res, `}`)
 
-	if err := os.MkdirAll(s.ParentDir(), 0777); err != nil {
+	if err := os.MkdirAll(s.ParentDir, 0777); err != nil {
 		return err
 	}
 
-	file, err := os.Create(s.ParentDir() + "/main.go")
+	file, err := os.Create(s.ParentDir + "/main.go")
 	if err != nil {
 		return err
 	}

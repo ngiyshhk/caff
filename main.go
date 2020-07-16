@@ -15,6 +15,11 @@ func run(args []string) error {
 	app := cli.NewApp()
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
+			Name:  "parentDir",
+			Usage: "output parent directory",
+			Value: ".",
+		},
+		cli.StringFlag{
 			Name:     "repo",
 			Usage:    "output repository name",
 			Required: true,
@@ -68,6 +73,7 @@ func exec(c *cli.Context) error {
 	}
 
 	schema := &model.Schema{
+		ParentDir:              c.String("parentDir"),
 		RepositoryName:         c.String("repo"),
 		ModelPackageName:       "entity",
 		GatewayPackageName:     "gateway",

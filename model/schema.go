@@ -8,6 +8,7 @@ import (
 
 // Schema .
 type Schema struct {
+	ParentDir              string
 	RepositoryName         string
 	ModelPackageName       string
 	IGatewayPackageName    string
@@ -22,6 +23,7 @@ type Schema struct {
 // SchemaWithTableName .
 func SchemaWithTableName(schema *Schema, tableName string) *Schema {
 	return &Schema{
+		ParentDir:              schema.ParentDir,
 		RepositoryName:         schema.RepositoryName,
 		ModelPackageName:       schema.ModelPackageName,
 		IGatewayPackageName:    schema.IGatewayPackageName,
@@ -94,9 +96,4 @@ func (s Schema) LastIUsecasePackageName() string {
 func (s Schema) LastUsecasePackageName() string {
 	res := strings.Split(s.UsecasePackageName, "/")
 	return res[len(res)-1]
-}
-
-// ParentDir .
-func (s Schema) ParentDir() string {
-	return strings.Join([]string{".", s.RepositoryName}, "/")
 }
